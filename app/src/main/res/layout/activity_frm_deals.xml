@@ -22,7 +22,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Formulario Tienda"
+            android:text="Formulario de Tiendas"
             android:textAlignment="center"
             android:textSize="25sp"
             android:textStyle="bold" />
@@ -131,7 +131,7 @@
                         android:id="@+id/btnImgDef"
                         android:layout_width="100dp"
                         android:layout_height="30dp"
-                        android:background="@drawable/btn_red"
+                        android:background="@drawable/btn_pink"
                         android:text="Quitar"
                         android:layout_margin="5dp"
                         android:textColor="@color/md_white_1000"

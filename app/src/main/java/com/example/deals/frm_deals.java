@@ -72,8 +72,6 @@ public class frm_deals extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
             }
         });
-
-
         init();
     }
 
@@ -133,9 +131,10 @@ public class frm_deals extends AppCompatActivity {
                 Toast.makeText(this, "el RUC ya existe", Toast.LENGTH_SHORT).show();
             }
         } else {
-            txtInputRuc.setError("Ingrese RUC.");
-            txtInputNameDeal.setError("Ingrese un nombre.");
-            txtInputDirection.setError("Ingrese una Direccion.");
+            txtInputRuc.setError(" ");
+            txtInputNameDeal.setError(" ");
+            txtInputDirection.setError(" ");
+            txtEditRuc.requestFocus();
             Toast.makeText(this, "Hay campos vacios.", Toast.LENGTH_SHORT).show();
         }
 
