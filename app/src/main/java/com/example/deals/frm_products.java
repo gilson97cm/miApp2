@@ -8,6 +8,8 @@ import androidx.core.app.ActivityCompat;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -16,22 +18,31 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.deals.bd.Connection;
+import com.example.deals.entities.CategoryVo;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 public class frm_products extends AppCompatActivity {
 
     final int REQUEST_CODE_GALLERY = 999;
 
+    Toolbar toolbar;
+
+    Spinner spinnerCategory;
 
     ImageView imgProduct;
-    Toolbar toolbar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +63,18 @@ public class frm_products extends AppCompatActivity {
                 finish();
             }
         });
+
+        //recuperar variables que envia detail_deal
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            String idDeal = extras.getString("idDeal");
+            //consultar los datos de la categoria
+            loadCategoryInSpinner(idDeal);
+            //
+        }
+
+
+
 
     }
 
@@ -84,7 +107,7 @@ public class frm_products extends AppCompatActivity {
     private byte[] ImageViewToByte(ImageView imgProduct) {
         Bitmap bitmap = ((BitmapDrawable) imgProduct.getDrawable()).getBitmap();
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG,100,stream);
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
         byte[] byteArray = stream.toByteArray();
         return byteArray;
     }
@@ -93,9 +116,10 @@ public class frm_products extends AppCompatActivity {
     public void choseImgProduct(View v) {
         ActivityCompat.requestPermissions(frm_products.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_CODE_GALLERY);
     }
+
     //poner el logo por defecto
-    public void imgDefaultProduct(View v){
-        imgProduct.setImageResource(R.drawable.ic_default);
+    public void imgDefaultProduct(View v) {
+        imgProduct.setImageResource(R.drawable.ic_product_default);
     }
 
     @Override
@@ -115,7 +139,7 @@ public class frm_products extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == REQUEST_CODE_GALLERY && resultCode == RESULT_OK && data != null){
+        if (requestCode == REQUEST_CODE_GALLERY && resultCode == RESULT_OK && data != null) {
             Uri uri = data.getData();
             try {
                 InputStream inputStream = getContentResolver().openInputStream(uri);
@@ -128,10 +152,35 @@ public class frm_products extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void init (){
+    private void init() {
         imgProduct = (ImageView) findViewById(R.id.ImagePrevProduct);
+        spinnerCategory = (Spinner) findViewById(R.id.spinnerCategory);
     }
+    //CARGAR CATEGORIAS
+    //agregar vistas al recyclerView
 
+    private void loadCategoryInSpinner(String idDeal_) {
+        List<String> listSpinnerCategory = new ArrayList<String>();
+        Connection db = new Connection(this, "bdDeals", null, 1);
+        SQLiteDatabase baseDatos = db.getWritableDatabase();
+        if (db != null) {
+            Cursor fila = baseDatos.rawQuery("SELECT * FROM category WHERE idDeal = '" + idDeal_ + "' ORDER BY id DESC", null);
+            int i = 0;
+            if (fila.moveToFirst()) {
+                do {
+                    String id = fila.getString(0);
+                    String name = fila.getString(1);
+                    listSpinnerCategory.add(name);
+                    i++;
+                } while (fila.moveToNext());
+                //llenar spiner con las categorias
 
+                ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, R.layout.spinner_item_categories, listSpinnerCategory);
+                spinnerArrayAdapter.setDropDownViewResource(R.layout.spinner_item_categories);
+                spinnerCategory.setAdapter(spinnerArrayAdapter);
+            }
+
+        }
+    }
 
 }

@@ -19,6 +19,7 @@
         android:layout_marginTop="59dp"
         android:orientation="vertical"
         android:padding="15dp">
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -106,62 +107,79 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
+                    android:text="Categoría:"
+                    android:textColor="@color/md_grey_500"
+                    android:textSize="18sp" />
+
+                <Spinner
+                    android:id="@+id/spinnerCategory"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:prompt="@string/select_category"
+                    android:spinnerMode="dialog"
+                    style="@style/Widget.AppCompat.Spinner.Underlined"/>
+
+                <androidx.appcompat.widget.AppCompatCheckedTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
                     android:text="Imagen:"
                     android:textColor="@color/md_grey_500"
                     android:textSize="18sp" />
+
                 <ImageView
                     android:id="@+id/ImagePrevProduct"
                     android:layout_width="130dp"
                     android:layout_height="130dp"
+                    android:layout_marginBottom="5dp"
                     android:background="@drawable/img_background"
-                    android:src="@drawable/ic_default"
                     android:padding="2dp"
-                    android:layout_marginBottom="5dp"/>
+                    android:src="@drawable/ic_product_default" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
                     android:layout_marginBottom="15dp"
+                    android:gravity="center"
                     android:orientation="horizontal">
 
                     <Button
                         android:id="@+id/btnChoseImgDeal"
                         android:layout_width="100dp"
                         android:layout_height="30dp"
-                        android:background="@drawable/btn_blue"
-                        android:text="Cambiar"
                         android:layout_margin="5dp"
-                        android:textColor="@color/md_white_1000"
+                        android:background="@drawable/btn_blue"
                         android:onClick="choseImgProduct"
-                        android:textSize="10sp"
-                        />
+                        android:text="Cambiar"
+                        android:textColor="@color/md_white_1000"
+                        android:textSize="10sp" />
+
                     <View
                         android:layout_width="2dp"
                         android:layout_height="match_parent"
                         android:layout_margin="5dp"
                         android:layout_marginBottom="10dp"
                         android:background="@color/md_grey_100" />
+
                     <Button
                         android:id="@+id/btnImgDef"
                         android:layout_width="100dp"
                         android:layout_height="30dp"
-                        android:background="@drawable/btn_pink"
-                        android:text="Quitar"
                         android:layout_margin="5dp"
-                        android:textColor="@color/md_white_1000"
+                        android:background="@drawable/btn_pink"
                         android:onClick="imgDefaultProduct"
-                        android:textSize="10sp"
-                        />
+                        android:text="Quitar"
+                        android:textColor="@color/md_white_1000"
+                        android:textSize="10sp" />
 
                 </LinearLayout>
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="2dp"
                     android:layout_margin="5dp"
                     android:layout_marginBottom="15dp"
                     android:background="@color/md_grey_100" />
-
 
 
             </LinearLayout>

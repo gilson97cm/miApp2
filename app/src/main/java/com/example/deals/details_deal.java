@@ -160,8 +160,6 @@ public class details_deal extends AppCompatActivity {
 
     }
 
-
-
     public void init(){
         nameDeal = (TextView) findViewById(R.id.txtNameDealDetail);
         addressDeal = (TextView) findViewById(R.id.txtDirectionDealDetail);
