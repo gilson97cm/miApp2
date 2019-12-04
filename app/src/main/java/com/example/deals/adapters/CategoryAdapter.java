@@ -66,7 +66,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
 
         // dentro de esta clase hay que hacer referencia a los items que aparezcan en nuestro item (elemento de la lista)
 
-       // ImageView logoDealMain;
+        // ImageView logoDealMain;
         TextView txtIdCategory;
         TextView txtNameCategory;
         TextView txtDescriptionCategory;
@@ -102,13 +102,14 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         public void onClick(View v) {
             String id = txtIdCategory.getText().toString();
             String name = txtNameCategory.getText().toString();
-         String idDeal_ = txtIdDealOnCardCategory.getText().toString();
+            String idDeal_ = txtIdDealOnCardCategory.getText().toString();
             switch (v.getId()) {
                 case R.id.btnMoreDetailsCategory:
                     Intent intent = new Intent(context, details_category.class); ///hay que enviar a la actividad details_category
                     //enviamos el id y el nombre de una actividad a otra
                     intent.putExtra("idCategory", id);
                     intent.putExtra("nameCategory", name);
+                    intent.putExtra("idDeal", idDeal_);
                     Toast.makeText(context, "Categoría: " + name, Toast.LENGTH_SHORT).show();
                     context.startActivity(intent);
                     break;

@@ -13,7 +13,7 @@
         <androidx.cardview.widget.CardView
             android:id="@+id/cardViewCategory"
             android:layout_width="match_parent"
-            android:layout_height="135dp"
+            android:layout_height="130dp"
             android:layout_margin="5dp">
 
             <LinearLayout
@@ -55,7 +55,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Descripcion de la Categoría"
-                            android:textSize="13sp" />
+                            android:textSize="13sp"
+                            android:visibility="gone"/>
 
                         <TextView
                             android:id="@+id/txtIdDealOnCardCategory"
@@ -78,7 +79,7 @@
                             android:gravity="center"
                             android:text="# de productos"
                             android:textColor="@android:color/darker_gray"
-                            android:textSize="10sp"/>
+                            android:textSize="15sp"/>
                     </LinearLayout>
 
                 </LinearLayout>

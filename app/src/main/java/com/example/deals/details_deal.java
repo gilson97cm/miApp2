@@ -12,6 +12,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -22,10 +24,17 @@ import com.example.deals.adapters.CategoryAdapter;
 import com.example.deals.bd.Connection;
 import com.example.deals.entities.CategoryVo;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import java.util.ArrayList;
 
 public class details_deal extends AppCompatActivity {
+    //sugerencias para la barra de busqueda
+    private String[] SUGGESTION = new String[]{
+            // "Apple", "Samsung"
+    };
+    private MaterialSearchView mMaterialSearchViewCategory;
+
     FloatingActionButton btnAddCategory;
     Toolbar toolbar;
     TextView nameDeal;
@@ -57,15 +66,21 @@ public class details_deal extends AppCompatActivity {
         setContentView(R.layout.activity_details_deal);
 
         //agrega la flecha para regresar en toolbar
-        toolbar = (Toolbar) findViewById(R.id.toolbar_);
+        toolbar = (Toolbar) findViewById(R.id.toolbar_DetailDeal);
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                finish();
             }
         });
+
+        //agregar icono de busqueda
+        mMaterialSearchViewCategory = (MaterialSearchView) findViewById(R.id.searchViewCategory);
+        mMaterialSearchViewCategory.setSuggestions(SUGGESTION);
+
         btnAddCategory = (FloatingActionButton) findViewById(R.id.btnAddCategory);
 
         init();
@@ -84,7 +99,41 @@ public class details_deal extends AppCompatActivity {
         CategoryAdapter adapter = new CategoryAdapter(listCategories);
         recyclerViewCategories.setAdapter(adapter);
         loadCategories(idDeal.getText().toString());
+
     }
+
+    //iconoes buscar y editar
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        //icono  para editar tiendas
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        //icono buscar
+        getMenuInflater().inflate(R.menu.edit_deal, menu);
+        MenuItem menuItem = menu.findItem(R.id.searchMenu);
+        mMaterialSearchViewCategory.setMenuItem(menuItem);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.editDeal) {
+           // edittDeal(String idDeal);
+            Toast.makeText(this, "Editar Tienda", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
 
     public void consult (String id){
         Connection db = new Connection(this, "bdDeals", null, 1);

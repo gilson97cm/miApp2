@@ -6,7 +6,12 @@
     android:layout_height="match_parent"
     tools:context=".details_category">
 
-    <include layout="@layout/toolbar" />
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_DetailCategory"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:background="@color/md_blue_500"
+        app:titleTextColor="@color/md_white_1000" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -62,13 +67,14 @@
                     android:textSize="15sp" />
 
                 <TextView
-                    android:id="@+id/txtRucDealInCategoryDetail"
+                    android:id="@+id/txtIdCategoryDetail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="RUC"
+                    android:text="ID CATEGORY"
                     android:textAlignment="center"
                     android:textSize="12sp"
                     android:visibility="gone"/>
+
                 <TextView
                     android:id="@+id/txtIdDealInCategoryDetail"
                     android:layout_width="match_parent"
@@ -128,7 +134,7 @@
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <com.miguelcatalan.materialsearchview.MaterialSearchView
-        android:id="@+id/searchView"
+        android:id="@+id/searchViewProduct"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Buscar"
@@ -138,4 +144,5 @@
         app:searchBackground="?colorPrimary"
         app:searchCloseIcon="@drawable/ic_action_navigation_close_inverted"
         app:searchSuggestionIcon="@drawable/ic_suggestion" />
+
 </RelativeLayout>

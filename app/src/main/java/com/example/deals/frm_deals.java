@@ -70,6 +70,7 @@ public class frm_deals extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                finish();
             }
         });
         init();
@@ -216,6 +217,5 @@ public class frm_deals extends AppCompatActivity {
         txtEditDirection.setText("");
         logoDeal.setImageResource(R.drawable.ic_default);
     }
-
 
 }
