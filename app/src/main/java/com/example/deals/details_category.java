@@ -169,6 +169,17 @@ public class details_category extends AppCompatActivity {
 
     }
 
+    public void gotoFrmProduct(View v){
+        // String idDeal_ = idDeal.getText().toString();
+        // String nameDeal_ = nameDeal.getText().toString();
+        Intent intent = new Intent(v.getContext(), frm_products.class);
+        //enviamos el id y el nombre de la tienda para guardar una categoria
+        // intent.putExtra("idDealDetailDeal",idDeal_);
+        //intent.putExtra("nameDealDetailDeal",nameDeal_);
+        startActivity(intent);
+        // Toast.makeText(this, "ID: "+idDeal_+"\nTienda: "+nameDeal_, Toast.LENGTH_SHORT).show();
+    }
+
 
 
 

@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".frm_deals">
+    tools:context=".frm_products">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar_frmDeal"
+        android:id="@+id/toolbar_frmProduct"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
         android:background="@color/md_blue_500"
@@ -22,7 +22,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Formulario de Tiendas"
+            android:text="Formulario de Productos"
             android:textAlignment="center"
             android:textSize="25sp"
             android:textStyle="bold" />
@@ -39,33 +39,16 @@
                 android:orientation="vertical"
                 android:padding="10dp">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/txtInputRuc"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    app:counterEnabled="true"
-                    app:counterMaxLength="13"
-                    app:errorEnabled="true">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/txtEditRuc"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="RUC"
-                        android:inputType="number"
-                        android:maxLength="13" />
-                </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/txtInputNameDeal"
+                    android:id="@+id/txtInputNameProduct"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     app:errorEnabled="true">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/txtEditNameDeal"
+                        android:id="@+id/txtEditNameProduct"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Nombre"
@@ -73,29 +56,61 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/txtInputDirection"
+                    android:id="@+id/txtInputDescriptionProduct"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     app:errorEnabled="true">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/txtEditDirection"
+                        android:id="@+id/txtEditDescriptionProduct"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Dirección"
+                        android:hint="Descripción"
                         android:inputType="textPersonName" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/txtInputPrice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    app:counterEnabled="true"
+                    app:errorEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/txtEditPrice"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Precio"
+                        android:inputType="numberDecimal" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/txtInputStock"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    app:counterEnabled="true"
+                    app:errorEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/txtEditStock"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Stock"
+                        android:inputType="number" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <androidx.appcompat.widget.AppCompatCheckedTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
-                    android:text="Logo"
+                    android:text="Imagen:"
                     android:textColor="@color/md_grey_500"
                     android:textSize="18sp" />
                 <ImageView
-                    android:id="@+id/logoPrevDeal"
+                    android:id="@+id/ImagePrevProduct"
                     android:layout_width="130dp"
                     android:layout_height="130dp"
                     android:background="@drawable/img_background"
@@ -118,7 +133,7 @@
                         android:text="Cambiar"
                         android:layout_margin="5dp"
                         android:textColor="@color/md_white_1000"
-                        android:onClick="choseImg"
+                        android:onClick="choseImgProduct"
                         android:textSize="10sp"
                         />
                     <View
@@ -135,7 +150,7 @@
                         android:text="Quitar"
                         android:layout_margin="5dp"
                         android:textColor="@color/md_white_1000"
-                        android:onClick="imgDefault"
+                        android:onClick="imgDefaultProduct"
                         android:textSize="10sp"
                         />
 
