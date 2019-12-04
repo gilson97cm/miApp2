@@ -28,6 +28,37 @@
             android:textSize="25sp"
             android:textStyle="bold" />
 
+        <TextView
+            android:id="@+id/txtNameDealInFrmProduct"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nombre de la tienda"
+            android:textAlignment="center"
+            android:textSize="15sp"/>
+        <TextView
+            android:id="@+id/txtIdDealInFrmProduct"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ID de la tienda"
+            android:textAlignment="center"
+            android:textSize="15sp"
+            android:visibility="gone"/>
+        <TextView
+            android:id="@+id/txtNameCategoryInFrmProduct"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nombre de la Categoría"
+            android:textAlignment="center"
+            android:textSize="15sp"/>
+        <TextView
+            android:id="@+id/txtIdCategoryInFrmProduct"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ID de la Categoría"
+            android:textAlignment="center"
+            android:textSize="15sp"
+            android:visibility="gone"/>
+
         <ScrollView
             android:id="@+id/scroll1"
             android:layout_width="match_parent"
@@ -103,21 +134,7 @@
                         android:inputType="number" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <androidx.appcompat.widget.AppCompatCheckedTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:text="Categoría:"
-                    android:textColor="@color/md_grey_500"
-                    android:textSize="18sp" />
 
-                <Spinner
-                    android:id="@+id/spinnerCategory"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:prompt="@string/select_category"
-                    android:spinnerMode="dialog"
-                    style="@style/Widget.AppCompat.Spinner.Underlined"/>
 
                 <androidx.appcompat.widget.AppCompatCheckedTextView
                     android:layout_width="match_parent"

@@ -6,6 +6,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -19,13 +20,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.deals.bd.Connection;
 import com.example.deals.entities.CategoryVo;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
@@ -39,9 +44,26 @@ public class frm_products extends AppCompatActivity {
 
     Toolbar toolbar;
 
-    Spinner spinnerCategory;
+    //informacion de la tienda y categoria
+
+    TextView txtNameDealInFrmProduct;
+    TextView txtIdDealInFrmProduct;
+    TextView txtNameCategoryInFrmProduct;
+    TextView txtIdCategoryInFrmProduct;
+
+    //elementos del formulario
+    TextInputLayout txtInputNameProduct;
+    TextInputEditText txtEditNameProduct;
+    TextInputLayout txtInputDescriptionProduct;
+    TextInputEditText txtEditDescriptionProduct;
+    TextInputLayout txtInputPrice;
+    TextInputEditText txtEditPrice;
+    TextInputLayout txtInputStock;
+    TextInputEditText txtEditStock;
 
     ImageView imgProduct;
+    Button btnChoseImgDeal;
+    Button btnImgDef;
 
 
     @Override
@@ -67,13 +89,16 @@ public class frm_products extends AppCompatActivity {
         //recuperar variables que envia detail_deal
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            String idDeal = extras.getString("idDeal");
-            //consultar los datos de la categoria
-            loadCategoryInSpinner(idDeal);
-            //
+            String idDeal = extras.getString("idDeal"); //el id de nebocio es para volver a details_category
+            String nameDeal = extras.getString("nameDeal");
+            String idCategory = extras.getString("idCategory");
+            String nameCategory = extras.getString("nameCategory");
+
+            txtIdDealInFrmProduct.setText(idDeal);
+            txtNameDealInFrmProduct.setText("Tienda: "+nameDeal);
+            txtIdCategoryInFrmProduct.setText(idCategory);
+            txtNameCategoryInFrmProduct.setText("Categoría: "+nameCategory);
         }
-
-
 
 
     }
@@ -94,8 +119,8 @@ public class frm_products extends AppCompatActivity {
         int idCategory = item.getItemId();
         //noinspection SimplifiableIfStatement
         if (idCategory == R.id.saveProduct) {
-            //insertProduct();
-            Toast.makeText(this, "Agregar Producto", Toast.LENGTH_SHORT).show();
+            insertProduct();
+            //Toast.makeText(this, "Agregar Producto", Toast.LENGTH_SHORT).show();
             return true;
         }
 
@@ -153,34 +178,78 @@ public class frm_products extends AppCompatActivity {
     }
 
     private void init() {
-        imgProduct = (ImageView) findViewById(R.id.ImagePrevProduct);
-        spinnerCategory = (Spinner) findViewById(R.id.spinnerCategory);
-    }
-    //CARGAR CATEGORIAS
-    //agregar vistas al recyclerView
 
-    private void loadCategoryInSpinner(String idDeal_) {
-        List<String> listSpinnerCategory = new ArrayList<String>();
+        //informacion de la tienda y categoria
+        txtNameDealInFrmProduct =(TextView) findViewById(R.id.txtNameDealInFrmProduct);
+        txtIdDealInFrmProduct = (TextView) findViewById(R.id.txtIdDealInFrmProduct);
+        txtNameCategoryInFrmProduct = (TextView) findViewById(R.id.txtNameCategoryInFrmProduct);
+        txtIdCategoryInFrmProduct = (TextView) findViewById(R.id.txtIdCategoryInFrmProduct);
+
+        //elementos del formulario
+        txtInputNameProduct = (TextInputLayout) findViewById(R.id.txtInputNameProduct);
+        txtEditNameProduct = (TextInputEditText) findViewById(R.id.txtEditNameProduct);
+        txtInputDescriptionProduct = (TextInputLayout) findViewById(R.id.txtInputDescriptionProduct);
+        txtEditDescriptionProduct = (TextInputEditText) findViewById(R.id.txtEditDescriptionProduct);
+        txtInputPrice = (TextInputLayout) findViewById(R.id.txtInputPrice);
+        txtEditPrice = (TextInputEditText) findViewById(R.id.txtEditPrice);
+        txtInputStock = (TextInputLayout) findViewById(R.id.txtInputStock);
+        txtEditStock = (TextInputEditText) findViewById(R.id.txtEditStock);
+        imgProduct = (ImageView) findViewById(R.id.ImagePrevProduct);
+        btnChoseImgDeal = (Button) findViewById(R.id.btnChoseImgDeal);
+        btnImgDef = (Button) findViewById(R.id.btnImgDef);
+
+
+    }
+
+
+    //insertar productos
+    public void insertProduct() {
         Connection db = new Connection(this, "bdDeals", null, 1);
         SQLiteDatabase baseDatos = db.getWritableDatabase();
-        if (db != null) {
-            Cursor fila = baseDatos.rawQuery("SELECT * FROM category WHERE idDeal = '" + idDeal_ + "' ORDER BY id DESC", null);
-            int i = 0;
-            if (fila.moveToFirst()) {
-                do {
-                    String id = fila.getString(0);
-                    String name = fila.getString(1);
-                    listSpinnerCategory.add(name);
-                    i++;
-                } while (fila.moveToNext());
-                //llenar spiner con las categorias
+        String name = txtEditNameProduct.getText().toString();
+        String description = txtEditDescriptionProduct.getText().toString();
+        String price = txtEditPrice.getText().toString();
+        String stock = txtEditStock.getText().toString();
+        String idCategory = txtIdCategoryInFrmProduct.getText().toString();
+        String idDeal = txtIdDealInFrmProduct.getText().toString();
 
-                ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, R.layout.spinner_item_categories, listSpinnerCategory);
-                spinnerArrayAdapter.setDropDownViewResource(R.layout.spinner_item_categories);
-                spinnerCategory.setAdapter(spinnerArrayAdapter);
+        byte[] imgProductTemp = ImageViewToByte(imgProduct);
+
+        if ((!name.isEmpty()) && (!description.isEmpty()) && (!price.isEmpty()) && (!stock.isEmpty())) {
+
+            ContentValues registro = new ContentValues();
+
+            Cursor fila = baseDatos.rawQuery("SELECT * FROM product WHERE name = '"+name+"' AND idCategory = '"+idCategory+"'" , null);
+
+            if (fila.getCount() <= 0) {
+                registro.put("name", name);
+                registro.put("description", description);
+                registro.put("price", price);
+                registro.put("stock", stock);
+                registro.put("idCategory", idCategory);
+                registro.put("imgProduct", imgProductTemp);
+
+                baseDatos.insert("product", null, registro);
+                baseDatos.close();
+
+                //clean();
+                Toast.makeText(this, "Producto agregado con exito.", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this, details_category.class);
+                intent.putExtra("idDeal", idDeal);
+                intent.putExtra("idCategory", idCategory);
+                startActivity(intent);
+            } else {
+                Toast.makeText(this, "el RUC ya existe", Toast.LENGTH_SHORT).show();
             }
-
+        } else {
+            txtInputNameProduct.setError(" ");
+            txtInputDescriptionProduct.setError(" ");
+            txtInputPrice.setError(" ");
+            txtInputStock.setError(" ");
+            txtInputNameProduct.requestFocus();
+            Toast.makeText(this, "Hay campos vacios.", Toast.LENGTH_SHORT).show();
         }
+
     }
 
 }

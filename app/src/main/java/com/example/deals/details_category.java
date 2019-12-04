@@ -175,6 +175,9 @@ public class details_category extends AppCompatActivity {
         Intent intent = new Intent(v.getContext(), frm_products.class);
         //enviamos el id y el nombre de la tienda para guardar una categoria
         intent.putExtra("idDeal",idDeal_);
+        intent.putExtra("nameDeal",txtNameDealInCategoryDetail.getText().toString());
+        intent.putExtra("idCategory",txtIdCategoryDetail.getText().toString());
+        intent.putExtra("nameCategory", txtNameCategoryDetail.getText().toString());
         //intent.putExtra("nameDealDetailDeal",nameDeal_);
         startActivity(intent);
          Toast.makeText(this, "ID: "+idDeal_, Toast.LENGTH_SHORT).show();
