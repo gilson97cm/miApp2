@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/SplashTheme">
-        <activity android:name=".frm_categories"></activity>
+        <activity android:name=".details_category"></activity>
+        <activity android:name=".frm_categories" />
         <activity android:name=".details_deal" />
         <activity android:name=".frm_deals" />
         <activity android:name=".MainActivity">

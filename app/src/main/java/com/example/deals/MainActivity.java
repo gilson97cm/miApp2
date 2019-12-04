@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Button btnMoreDetails;
     TextView txtIdDeal;
     CardView cardView;
-    Button btnMoreDetailsDeal;
+    Button btnMoreDestroyDeal;
     TextView txtNameDeal;
 
     ArrayList<DealVo> listDeals;
@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-
+//accion buscar
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -100,10 +100,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     String id = fila.getString(0);
                     String ruc = fila.getString(1);
                     String name = fila.getString(2);
-                    String description = fila.getString(3);
+                    String direction = fila.getString(3);
                     byte[] img = fila.getBlob(4);
 
-                    listDeals.add(new DealVo(id, ruc, name, description, img));
+                    listDeals.add(new DealVo(id, ruc, name, direction, img));
                     i++;
                 } while (fila.moveToNext());
             }
@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void init() {
 
         btnMoreDetails = (Button) findViewById(R.id.btnMoreDetails);
-        btnMoreDetailsDeal = (Button) findViewById(R.id.btnDestroyDeal);
+        btnMoreDestroyDeal = (Button) findViewById(R.id.btnDestroyDeal);
         txtIdDeal = (TextView) findViewById(R.id.txtIdDeal);
         txtNameDeal = (TextView) findViewById(R.id.txtNameDeal);
         cardView = (CardView) findViewById(R.id.cardView);

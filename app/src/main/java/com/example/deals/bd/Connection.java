@@ -15,7 +15,7 @@ public class Connection extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE deal (id INTEGER PRIMARY KEY, ruc TEXT, name TEXT, direction TEXT, logo BLOG)");
-        db.execSQL("CREATE TABLE category (id INTEGER PRIMARY KEY  , name TEXT, direction TEXT, idDeal INT)");
+        db.execSQL("CREATE TABLE category (id INTEGER PRIMARY KEY, name TEXT, description TEXT, idDeal TEXT)");
         db.execSQL("CREATE TABLE product (id INTEGER PRIMARY KEY , name TEXT, description TEXT, price FLOAT, stock INT, idCategory)");
 
     }

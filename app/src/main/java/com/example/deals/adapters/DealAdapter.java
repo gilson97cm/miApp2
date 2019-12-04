@@ -123,6 +123,7 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.DealViewHolder
                         if (fila.getCount() <= 0) {
                             Toast.makeText(v.getContext(), "Nada para eliminar.", Toast.LENGTH_SHORT).show();
                         } else {
+                            baseDatos.delete("category", "idDeal = " + id, null);
                             baseDatos.delete("deal", "id = " + id, null);
                             baseDatos.close();
                             Toast.makeText(v.getContext(), "Se elimino: " + name, Toast.LENGTH_SHORT).show();
