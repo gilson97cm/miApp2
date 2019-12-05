@@ -20,6 +20,7 @@ import com.example.deals.R;
 import com.example.deals.bd.Connection;
 import com.example.deals.details_category;
 import com.example.deals.entities.ProductVo;
+import com.example.deals.frm_edit_products;
 
 import java.util.ArrayList;
 
@@ -114,12 +115,11 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             String idDeal_ = "0";
             switch (v.getId()) {
                 case R.id.btnEditProduct:
-                  //  Intent intent = new Intent(context, frm_edit_product.class);
-                    //enviamos el id y el nombre de una actividad a otra
-                    //intent.putExtra("idProduct", id);
-                    //intent.putExtra("nameProduct", name);
                     Toast.makeText(context, "Producto: " + name, Toast.LENGTH_SHORT).show();
-                    //context.startActivity(intent);
+                  Intent intent = new Intent(context, frm_edit_products.class);
+                    intent.putExtra("idCategory",idCategory_);
+                    intent.putExtra("idProduct",id);
+                    context.startActivity(intent);
                     break;
                 case R.id.btnDestroyProduct:
                     Connection db = new Connection(v.getContext(), "bdDeals", null, 1);

@@ -1,17 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".frm_products">
-
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar_frmProduct"
-        android:layout_width="match_parent"
-        android:layout_height="?actionBarSize"
-        android:background="@color/md_blue_500"
-        app:titleTextColor="@color/md_white_1000" />
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -50,6 +42,14 @@
             android:text="Nombre de la Categoría"
             android:textAlignment="center"
             android:textSize="15sp"/>
+        <TextView
+            android:id="@+id/txtIdProduct"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="idProduct"
+            android:textAlignment="center"
+            android:textSize="15sp"
+            android:visibility="gone"/>
         <TextView
             android:id="@+id/txtIdCategoryInFrmProduct"
             android:layout_width="match_parent"

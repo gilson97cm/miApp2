@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -238,7 +237,7 @@ public class details_category extends AppCompatActivity {
     public void gotoFrmProduct(View v){
         String idDeal_ = txtIdDealInCategoryDetail.getText().toString();
         // String nameDeal_ = nameDeal.getText().toString();
-        Intent intent = new Intent(v.getContext(), frm_products.class);
+        Intent intent = new Intent(v.getContext(), frm_add_products.class);
         //enviamos el id y el nombre de la tienda para guardar una categoria
         intent.putExtra("idDeal",idDeal_);
         intent.putExtra("nameDeal",txtNameDealInCategoryDetail.getText().toString());

@@ -19,26 +19,20 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.deals.bd.Connection;
-import com.example.deals.entities.CategoryVo;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 
-public class frm_products extends AppCompatActivity {
+public class frm_add_products extends AppCompatActivity {
 
     final int REQUEST_CODE_GALLERY = 999;
 
@@ -70,7 +64,7 @@ public class frm_products extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_frm_products);
+        setContentView(R.layout.activity_frm_add_products);
 
         init();
 
@@ -139,7 +133,7 @@ public class frm_products extends AppCompatActivity {
 
     //cambiar el logo
     public void choseImgProduct(View v) {
-        ActivityCompat.requestPermissions(frm_products.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_CODE_GALLERY);
+        ActivityCompat.requestPermissions(frm_add_products.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_CODE_GALLERY);
     }
 
     //poner el logo por defecto
