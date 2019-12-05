@@ -2,4 +2,10 @@
     <string name="app_name">Tiendas App</string>
     <string name="register">Registrar</string>
     <string name="select_category">Seleccione una Categoría</string>
+    <string name="addDeal">Registrar Tienda</string>
+    <string name="editDeal">Editar Tienda</string>
+    <string name="addCategory">Registrar Categoría</string>
+    <string name="editCategory">Editar Categorpia</string>
+    <string name="addProduct">Registrar Producto</string>
+    <string name="editProduct">Editar Producto</string>
 </resources>

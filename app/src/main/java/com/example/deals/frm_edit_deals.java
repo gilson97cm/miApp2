@@ -1,9 +1,7 @@
 package com.example.deals;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 
@@ -22,22 +20,20 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.deals.bd.Connection;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
-public class frm_deals extends AppCompatActivity {
+public class frm_edit_deals extends AppCompatActivity {
+
     Toolbar toolbar;
     TextInputLayout txtInputRuc;
     TextInputLayout txtInputNameDeal;
@@ -51,7 +47,8 @@ public class frm_deals extends AppCompatActivity {
     ImageView logoDeal;
     Button btnChoseImgDeal;
 
-    MainActivity functions = new MainActivity();
+    TextView txtIdDealEdit;
+
 
     final int REQUEST_CODE_GALLERY = 999;
 
@@ -59,28 +56,41 @@ public class frm_deals extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_frm_deals);
-
+        setContentView(R.layout.activity_frm_edit_deals);
 
         //agrega la flecha para regresar en toolbar
-        toolbar = (Toolbar) findViewById(R.id.toolbar_frmDeal);
+        toolbar = (Toolbar) findViewById(R.id.toolbar_frmDealEdit);
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
+        init();
+
+        //recuperar variables que envia MainActivity
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            String idDeal = extras.getString("idDeal");
+            txtIdDealEdit.setText(idDeal);
+            consultDeal(idDeal);
+        }
+
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                Intent intent = new Intent(getApplicationContext(), details_deal.class);
+                String idDeal_ = txtIdDealEdit.getText().toString();
+                intent.putExtra("idDeal", idDeal_);
+                startActivity(intent);
                 finish();
             }
         });
-        init();
+
+
     }
 
-    //visto para registrar tiendas
+    //lapiz para registrar editar
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.save_deal, menu);
+        getMenuInflater().inflate(R.menu.edit_deal_frm, menu);
         return true;
     }
 
@@ -92,16 +102,61 @@ public class frm_deals extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.saveDeal) {
-            insertDeal();
+        if (id == R.id.editDealFrm) {
+            String idDeal = txtIdDealEdit.getText().toString();
+            updateDeal(idDeal);
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    //insertar datos en la bbdd
-    private void insertDeal() {
+    //iniciar elementos de la vista
+    private void init() {
+        txtInputRuc = (TextInputLayout) findViewById(R.id.txtInputRuc);
+        txtInputNameDeal = (TextInputLayout) findViewById(R.id.txtInputNameDeal);
+        txtInputDirection = (TextInputLayout) findViewById(R.id.txtInputDirection);
+
+
+        txtEditRuc = (TextInputEditText) findViewById(R.id.txtEditRuc);
+        txtEditNameDeal = (TextInputEditText) findViewById(R.id.txtEditNameDeal);
+        txtEditDirection = (TextInputEditText) findViewById(R.id.txtEditDirection);
+
+
+        logoDeal = (ImageView) findViewById(R.id.logoPrevDeal);
+        btnChoseImgDeal = (Button) findViewById(R.id.btnChoseImgDeal);
+
+        txtIdDealEdit = (TextView) findViewById(R.id.txtIdDealEdit);
+
+    }
+
+    //llenar los campos con los datos de la tienda
+    private void consultDeal(String idDeal_) {
+        Connection db = new Connection(this, "bdDeals", null, 1);
+        SQLiteDatabase baseDatos = db.getWritableDatabase();
+
+        Cursor fila = baseDatos.rawQuery("SELECT * FROM deal WHERE id = " + idDeal_, null);
+
+        if (fila.moveToFirst()) {
+            txtEditRuc.setText(fila.getString(1));
+            txtEditNameDeal.setText(fila.getString(2));
+            txtEditDirection.setText(fila.getString(3));
+
+            byte[] blob = fila.getBlob(4);
+            Bitmap bmp= BitmapFactory.decodeByteArray(blob,0,blob.length);
+            ImageView image=new ImageView(this);
+            logoDeal.setImageBitmap(bmp);
+
+        } else {
+            Toast.makeText(this, "No hay registro.", Toast.LENGTH_SHORT).show();
+        }
+        baseDatos.close();
+
+    }
+
+    //actualizar tienda
+
+    private void updateDeal(String idDeal_){
         Connection db = new Connection(this, "bdDeals", null, 1);
         SQLiteDatabase baseDatos = db.getWritableDatabase();
         String ruc = txtEditRuc.getText().toString();
@@ -110,27 +165,26 @@ public class frm_deals extends AppCompatActivity {
         byte[] imgDeal = ImageViewToByte(logoDeal);
 
         if ((!ruc.isEmpty()) && (!name.isEmpty()) && (!direction.isEmpty())) {
+            Cursor fila = baseDatos.rawQuery("SELECT * FROM deal WHERE ruc = "+ruc,null);
+           //if(fila.getCount() <= 0){
+               ContentValues registro = new ContentValues();
+               registro.put("ruc", ruc);
+               registro.put("name", name);
+               registro.put("direction", direction);
+               registro.put("logo", imgDeal);
 
-            ContentValues registro = new ContentValues();
+               baseDatos.update("deal", registro, "id = "+idDeal_,null);
+               baseDatos.close();
 
-            Cursor fila = baseDatos.rawQuery("SELECT * FROM deal WHERE ruc = " + ruc, null);
+               // clean();
+               Toast.makeText(this, "Tienda actualizada con exito.", Toast.LENGTH_SHORT).show();
+               Intent intent = new Intent(this, details_deal.class);
+               intent.putExtra("idDeal",idDeal_);
+               startActivity(intent);
+           //}else{
+             //  Toast.makeText(this, "El RUC ya existe", Toast.LENGTH_SHORT).show();
+           //}
 
-            if (fila.getCount() <= 0) {
-                registro.put("ruc", ruc);
-                registro.put("name", name);
-                registro.put("direction", direction);
-                registro.put("logo", imgDeal);
-
-                baseDatos.insert("deal", null, registro);
-                baseDatos.close();
-
-                clean();
-                Toast.makeText(this, "Tienda registrada con exito.", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(this, MainActivity.class);
-                startActivity(intent);
-            } else {
-                Toast.makeText(this, "el RUC ya existe", Toast.LENGTH_SHORT).show();
-            }
         } else {
             txtInputRuc.setError(" ");
             txtInputNameDeal.setError(" ");
@@ -138,7 +192,6 @@ public class frm_deals extends AppCompatActivity {
             txtEditRuc.requestFocus();
             Toast.makeText(this, "Hay campos vacios.", Toast.LENGTH_SHORT).show();
         }
-
     }
 
     //de imagen a byte
@@ -152,7 +205,7 @@ public class frm_deals extends AppCompatActivity {
 
     //cambiar el logo
     public void choseImg(View v) {
-        ActivityCompat.requestPermissions(frm_deals.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_CODE_GALLERY);
+        ActivityCompat.requestPermissions(frm_edit_deals.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_CODE_GALLERY);
     }
     //poner el logo por defecto
     public void imgDefault(View v){
@@ -189,33 +242,5 @@ public class frm_deals extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    //iniciar elementos de la vista
-    private void init() {
-        txtInputRuc = (TextInputLayout) findViewById(R.id.txtInputRuc);
-        txtInputNameDeal = (TextInputLayout) findViewById(R.id.txtInputNameDeal);
-        txtInputDirection = (TextInputLayout) findViewById(R.id.txtInputDirection);
-
-
-        txtEditRuc = (TextInputEditText) findViewById(R.id.txtEditRuc);
-        txtEditNameDeal = (TextInputEditText) findViewById(R.id.txtEditNameDeal);
-        txtEditDirection = (TextInputEditText) findViewById(R.id.txtEditDirection);
-
-
-        logoDeal = (ImageView) findViewById(R.id.logoPrevDeal);
-        btnChoseImgDeal = (Button) findViewById(R.id.btnChoseImgDeal);
-
-    }
-
-    //limpiar formularios
-    private void clean() {
-        txtInputRuc.setError(null);
-        txtInputNameDeal.setError(null);
-        txtInputDirection.setError(null);
-        txtEditRuc.setText("");
-        txtEditRuc.requestFocus();
-        txtEditNameDeal.setText("");
-        txtEditDirection.setText("");
-        logoDeal.setImageResource(R.drawable.ic_default);
-    }
 
 }

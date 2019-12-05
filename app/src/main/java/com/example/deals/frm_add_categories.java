@@ -16,11 +16,10 @@ import android.widget.Toast;
 
 
 import com.example.deals.bd.Connection;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
-public class frm_categories extends AppCompatActivity {
+public class frm_add_categories extends AppCompatActivity {
 
     Toolbar toolbar;
     TextView nameDeal;
@@ -34,7 +33,7 @@ public class frm_categories extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_frm_categories);
+        setContentView(R.layout.activity_frm_add_categories);
         //agrega la flecha para regresar en toolbar
         toolbar = (Toolbar) findViewById(R.id.toolbar_frmCategory);
         setSupportActionBar(toolbar);
@@ -45,6 +44,7 @@ public class frm_categories extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), details_deal.class);
                 intent.putExtra("idDeal", idDeal.getText().toString());
                 startActivity(intent);
+                finish();
             }
         });
 

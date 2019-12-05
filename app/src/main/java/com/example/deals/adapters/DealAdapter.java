@@ -71,7 +71,6 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.DealViewHolder
         Context context;
 
         // dentro de esta clase hay que hacer referencia a los items que aparezcan en nuestro item (elemento de la lista)
-
         ImageView logoDealMain;
         TextView txtIdDeal;
         TextView txtNameDeal;
@@ -133,7 +132,6 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.DealViewHolder
                     } else {
                         Toast.makeText(v.getContext(), "Nada para eliminar.", Toast.LENGTH_SHORT).show();
                     }
-
                     break;
             }
         }

@@ -1,18 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".frm_deals">
-
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar_frmDeal"
-        android:layout_width="match_parent"
-        android:layout_height="?actionBarSize"
-        android:background="@color/md_blue_500"
-        app:titleTextColor="@color/md_white_1000" />
-
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -38,6 +29,12 @@
                 android:gravity="center"
                 android:orientation="vertical"
                 android:padding="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/txtIdDealEdit"
+                    android:visibility="gone"/>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/txtInputRuc"

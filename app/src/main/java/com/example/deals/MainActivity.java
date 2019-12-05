@@ -3,8 +3,6 @@ package com.example.deals;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -114,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     //ir al formulario para agregar tiendas
     public void addDeal(View v) {
         Toast.makeText(this, "Agregar Tienda.", Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(this, frm_deals.class);
+        Intent intent = new Intent(this, frm_add_deals.class);
         startActivity(intent);
 
     }
@@ -134,7 +132,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.fab:
-                Intent intent = new Intent(this, frm_deals.class);
+                Intent intent = new Intent(this, frm_add_deals.class);
                 startActivity(intent);
                 break;
         }

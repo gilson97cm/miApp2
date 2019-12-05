@@ -2,6 +2,8 @@ package com.example.deals;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -14,9 +16,13 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.deals.adapters.ProductAdapter;
 import com.example.deals.bd.Connection;
+import com.example.deals.entities.ProductVo;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
+
+import java.util.ArrayList;
 
 public class details_category extends AppCompatActivity {
     //sugerencias para la barra de busqueda
@@ -38,6 +44,9 @@ public class details_category extends AppCompatActivity {
     TextView txtNameCategoryDetail;
     TextView txtDescriptionCategoryDetail;
 
+    //cargar tarjetas de productos
+    RecyclerView recyclerViewProducts;
+    ArrayList<ProductVo> listProducts;
 
 
     @Override
@@ -84,6 +93,14 @@ public class details_category extends AppCompatActivity {
            //
         }
 
+        //recycler adapter
+        listProducts = new ArrayList<>();
+        recyclerViewProducts = (RecyclerView) findViewById(R.id.recyclerViewProducts);
+        recyclerViewProducts.setLayoutManager(new LinearLayoutManager(this));
+        ProductAdapter adapter = new ProductAdapter(listProducts);
+        recyclerViewProducts.setAdapter(adapter);
+        loadProducts(txtIdCategoryDetail.getText().toString());
+
     }
 
     //iconoes buscar y editar
@@ -98,9 +115,6 @@ public class details_category extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
-
-
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -110,13 +124,48 @@ public class details_category extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.editCategory) {
-            // edittDeal(String idDeal);
+            String idDeal_ = txtIdDealInCategoryDetail.getText().toString();
+            Intent intent = new Intent(getApplicationContext(), frm_edit_categories.class);
+            intent.putExtra("idDeal",idDeal_);
+            intent.putExtra("nameDeal",txtNameDealInCategoryDetail.getText().toString());
+            intent.putExtra("idCategory",txtIdCategoryDetail.getText().toString());
+            intent.putExtra("nameCategory", txtNameCategoryDetail.getText().toString());
+            startActivity(intent);
             Toast.makeText(this, "Editar Categoria", Toast.LENGTH_SHORT).show();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
+
+    //agregar vistas al recyclerView
+    public void loadProducts(String idC) {
+        Connection db = new Connection(this, "bdDeals", null, 1);
+        SQLiteDatabase baseDatos = db.getWritableDatabase();
+        if (db != null) {
+                Cursor fila= baseDatos.rawQuery("SELECT * FROM product WHERE idCategory = '"+idC+"' ORDER BY id DESC",null);
+            int i = 0;
+            if (!(fila.getCount() <= 0)){
+                if (fila.moveToFirst()) {
+                    do {
+                        String id = fila.getString(0);
+                        String name = fila.getString(1);
+                        String description = fila.getString(2);
+                        String price = fila.getString(3);
+                        String stock = fila.getString(4);
+                        String idCategory = fila.getString(5);
+                        byte[] img = fila.getBlob(6);
+
+                        listProducts.add(new ProductVo(id, name, description, price, stock, idCategory, img));
+                        i++;
+                    } while (fila.moveToNext());
+                }
+            }else {
+                Toast.makeText(getApplicationContext(), "No hay registros.", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
 
     //consultar datos de una categoria
     public void consultCategory (String id){
@@ -166,6 +215,11 @@ public class details_category extends AppCompatActivity {
          txtIdCategoryDetail = (TextView) findViewById(R.id.txtIdCategoryDetail);
          txtNameCategoryDetail = (TextView) findViewById(R.id.txtNameCategoryDetail);
          txtDescriptionCategoryDetail = (TextView) findViewById(R.id.txtDescriptionCategoryDetail);
+
+         //tarjetas de productos
+       // recyclerViewProducts =(RecyclerView) findViewById(R.id.recyclerViewProducts);
+
+
 
     }
 

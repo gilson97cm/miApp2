@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".frm_add_categories">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_frmCategory"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:background="@color/md_blue_500"
+        app:titleTextColor="@color/md_white_1000"
+        app:title="@string/addCategory"/>
+
+   <include layout="@layout/frm_categories_layout"/>
+
+</RelativeLayout>

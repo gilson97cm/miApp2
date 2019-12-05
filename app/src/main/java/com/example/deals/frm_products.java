@@ -95,7 +95,7 @@ public class frm_products extends AppCompatActivity {
             String nameCategory = extras.getString("nameCategory");
 
             txtIdDealInFrmProduct.setText(idDeal);
-            txtNameDealInFrmProduct.setText("Tienda: "+nameDeal);
+            txtNameDealInFrmProduct.setText(nameDeal);
             txtIdCategoryInFrmProduct.setText(idCategory);
             txtNameCategoryInFrmProduct.setText("Categoría: "+nameCategory);
         }
@@ -239,7 +239,7 @@ public class frm_products extends AppCompatActivity {
                 intent.putExtra("idCategory", idCategory);
                 startActivity(intent);
             } else {
-                Toast.makeText(this, "el RUC ya existe", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "el Producto ya existe", Toast.LENGTH_SHORT).show();
             }
         } else {
             txtInputNameProduct.setError(" ");

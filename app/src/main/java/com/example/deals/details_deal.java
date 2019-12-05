@@ -126,7 +126,10 @@ public class details_deal extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.editDeal) {
-           // edittDeal(String idDeal);
+           Intent intent = new Intent(getApplicationContext(), frm_edit_deals.class);
+           String  idDeal_ = idDeal.getText().toString();
+           intent.putExtra("idDeal", idDeal_);
+           startActivity(intent);
             Toast.makeText(this, "Editar Tienda", Toast.LENGTH_SHORT).show();
             return true;
         }
@@ -184,7 +187,7 @@ public class details_deal extends AppCompatActivity {
     public void gotoFrmCategory(View v){
         String idDeal_ = idDeal.getText().toString();
         String nameDeal_ = nameDeal.getText().toString();
-        Intent intent = new Intent(v.getContext(), frm_categories.class);
+        Intent intent = new Intent(v.getContext(), frm_add_categories.class);
         //enviamos el id y el nombre de la tienda para guardar una categoria
         intent.putExtra("idDealDetailDeal",idDeal_);
         intent.putExtra("nameDealDetailDeal",nameDeal_);

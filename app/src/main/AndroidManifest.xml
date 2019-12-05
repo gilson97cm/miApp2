@@ -11,11 +11,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/SplashTheme">
-        <activity android:name=".frm_products"></activity>
+        <activity android:name=".frm_edit_categories"></activity>
+        <activity android:name=".frm_edit_deals" />
+        <activity android:name=".frm_products" />
         <activity android:name=".details_category" />
-        <activity android:name=".frm_categories" />
+        <activity android:name=".frm_add_categories" />
         <activity android:name=".details_deal" />
-        <activity android:name=".frm_deals" />
+        <activity android:name=".frm_add_deals" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
