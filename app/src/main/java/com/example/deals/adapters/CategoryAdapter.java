@@ -122,6 +122,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
                         if (fila.getCount() <= 0) {
                             Toast.makeText(v.getContext(), "Nada para eliminar.", Toast.LENGTH_SHORT).show();
                         } else {
+                            baseDatos.delete("product", "idCategory = " + id, null);
                             baseDatos.delete("category", "id = " + id, null);
                             baseDatos.close();
                             Toast.makeText(v.getContext(), "Se elimino: " + name, Toast.LENGTH_SHORT).show();

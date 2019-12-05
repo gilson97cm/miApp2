@@ -100,9 +100,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             btnEditProduct = (Button) v.findViewById(R.id.btnEditProduct);
             btnDestroyProduct = (Button) v.findViewById(R.id.btnDestroyProduct);
 
-
         }
-
         void setOnClickListeners() {
             btnEditProduct.setOnClickListener(this);
             btnDestroyProduct.setOnClickListener(this);
@@ -112,9 +110,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         public void onClick(View v) {
             String id = txtIdProductInCard.getText().toString();
             String name = txtNameProduct.getText().toString();
-
-
-
+            String idCategory_ = txtIdCategoryInCardProduct.getText().toString();
+            String idDeal_ = "0";
             switch (v.getId()) {
                 case R.id.btnEditProduct:
                   //  Intent intent = new Intent(context, frm_edit_product.class);
@@ -127,21 +124,15 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                 case R.id.btnDestroyProduct:
                     Connection db = new Connection(v.getContext(), "bdDeals", null, 1);
                     SQLiteDatabase baseDatos = db.getWritableDatabase();
-
                     if (!id.equals("")) {
-                        Cursor fila = baseDatos.rawQuery("SELECT * FROM product WHERE id = " + id, null);
-                        if (fila.getCount() <= 0) {
-                            Toast.makeText(v.getContext(), "Nada para eliminar.", Toast.LENGTH_SHORT).show();
-                        } else {
                             baseDatos.delete("product", "id = " + id, null);
                             baseDatos.close();
                             Toast.makeText(v.getContext(), "Se elimino: " + name, Toast.LENGTH_SHORT).show();
-
                             Intent intent1 = new Intent(context, details_category.class);
-                           // intent1.putExtra("idDeal",idDeal_);
-                            //intent1.putExtra("idCategory",idCategory_);
+                            intent1.putExtra("idDeal",idDeal_);
+                           intent1.putExtra("idCategory",idCategory_);
                             context.startActivity(intent1);
-                        }
+
                     } else {
                         Toast.makeText(v.getContext(), "Nada para eliminar.", Toast.LENGTH_SHORT).show();
                     }

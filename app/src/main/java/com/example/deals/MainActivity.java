@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     //agregar vistas al recyclerView
     public void loadDeals() {
-        Connection db = new Connection(this, "bdDeals", null, 1);
+         Connection db = new Connection(this, "bdDeals", null, 1);
         SQLiteDatabase baseDatos = db.getWritableDatabase();
         if (db != null) {
             Cursor fila = baseDatos.rawQuery("SELECT * FROM deal ORDER BY id DESC", null);

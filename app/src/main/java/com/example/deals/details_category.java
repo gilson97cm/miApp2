@@ -85,8 +85,20 @@ public class details_category extends AppCompatActivity {
         if (extras != null) {
             String idDeal = extras.getString("idDeal");
             String idCategory = extras.getString("idCategory");
-            //llenar los datos de la tienda
-            consultDeal(idDeal);
+
+            if(idDeal.equals("0")){
+                Connection db = new Connection(this, "bdDeals", null, 1);
+                SQLiteDatabase baseDatos = db.getWritableDatabase();
+                Cursor fila = baseDatos.rawQuery("SELECT *FROM category WHERE id = " + idCategory, null);
+                if (fila.moveToFirst()) {
+                    String idTemp = fila.getString(3);
+                    consultDeal(idTemp);
+                    baseDatos.close();
+                }
+            }else{
+                //llenar los datos de la tienda
+                consultDeal(idDeal);
+            }
 
             //consultar los datos de la categoria
            consultCategory(idCategory);
