@@ -18,6 +18,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -81,6 +82,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         loadDeals();
 
 
+
+
     }
 
 //accion buscar
@@ -90,6 +93,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         inflater.inflate(R.menu.search_deal, menu);
         MenuItem menuItem = menu.findItem(R.id.searchDeal);
         SearchView searchView =(SearchView) MenuItemCompat.getActionView(menuItem);
+        //custom searchbar
+        searchView.setQueryHint("Buscar Tienda...");
+        EditText searchEditText = searchView.findViewById(R.id.search_src_text);
+        searchEditText.setTextColor(Color.WHITE);
+        searchEditText.setHintTextColor(Color.WHITE);
+        /////
+
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
