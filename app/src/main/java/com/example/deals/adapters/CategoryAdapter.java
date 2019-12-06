@@ -56,6 +56,13 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         return mDataset.size();
     }
 
+    //filtrar tiendas
+    public void setFilter(ArrayList<CategoryVo> CategoryList_){
+        this.mDataset = new ArrayList<>();
+        this.mDataset.addAll(CategoryList_);
+        notifyDataSetChanged();
+    }
+
 
     public static class CategoryViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         Context context;

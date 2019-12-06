@@ -1,8 +1,10 @@
 package com.example.deals;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import androidx.core.view.MenuItemCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -12,6 +14,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -47,6 +50,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     TextView txtNameDeal;
 
     ArrayList<DealVo> listDeals;
+    DealAdapter adapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,8 +63,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setSupportActionBar(toolbar);
         toolbar.setTitleTextColor(Color.parseColor("#FFFFFF"));
 
-        mMaterialSearchView = (MaterialSearchView) findViewById(R.id.searchView);
-        mMaterialSearchView.setSuggestions(SUGGESTION);
+     //  mMaterialSearchView = (MaterialSearchView) findViewById(R.id.searchView);
+      //  searchView = (SearchView) findViewById(R.id.searchView);
+      //  mMaterialSearchView.setSuggestions(SUGGESTION);
 
 
         final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -70,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         listDeals = new ArrayList<>();
         recyclerViewDeals = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerViewDeals.setLayoutManager(new LinearLayoutManager(this));
-        DealAdapter adapter = new DealAdapter(listDeals);
+         adapter = new DealAdapter(listDeals);
         recyclerViewDeals.setAdapter(adapter);
         loadDeals();
 
@@ -80,10 +86,62 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //accion buscar
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        MenuItem menuItem = menu.findItem(R.id.searchMenu);
-        mMaterialSearchView.setMenuItem(menuItem);
-        return super.onCreateOptionsMenu(menu);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.search_deal, menu);
+        MenuItem menuItem = menu.findItem(R.id.searchDeal);
+        SearchView searchView =(SearchView) MenuItemCompat.getActionView(menuItem);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                try {
+                    ArrayList<DealVo> listaFiltrada = filter(listDeals,newText);
+                    adapter.setFilter(listaFiltrada);
+
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                return false;
+            }
+        });
+
+        MenuItemCompat.setOnActionExpandListener(menuItem, new MenuItemCompat.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem item) {
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem item) {
+                adapter.setFilter(listDeals);
+                return true;
+            }
+        });
+
+        return true; //
+    }
+
+    private ArrayList<DealVo> filter(ArrayList<DealVo> deals, String text){
+        ArrayList<DealVo> listaFiltrada =  new ArrayList<DealVo>();
+        try {
+            text = text.toLowerCase();
+
+            for(DealVo dealVo: deals){
+                String deal = dealVo.getName().toLowerCase();
+
+                if(deal.contains(text)){
+                    listaFiltrada.add(dealVo);
+                }
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return listaFiltrada;
     }
 
 
@@ -139,4 +197,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
     }
+
+
 }

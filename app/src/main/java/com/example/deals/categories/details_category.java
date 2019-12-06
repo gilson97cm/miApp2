@@ -1,7 +1,9 @@
 package com.example.deals.categories;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.MenuItemCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -10,6 +12,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -19,6 +22,7 @@ import com.example.deals.R;
 import com.example.deals.adapters.ProductAdapter;
 import com.example.deals.bd.Connection;
 import com.example.deals.deals.details_deal;
+import com.example.deals.entities.CategoryVo;
 import com.example.deals.entities.ProductVo;
 import com.example.deals.products.frm_add_products;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -27,11 +31,6 @@ import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import java.util.ArrayList;
 
 public class details_category extends AppCompatActivity {
-    //sugerencias para la barra de busqueda
-    private String[] SUGGESTION = new String[]{
-            // "Apple", "Samsung"
-    };
-    private MaterialSearchView mMaterialSearchViewProduct;
 
 
     Toolbar toolbar;
@@ -49,6 +48,7 @@ public class details_category extends AppCompatActivity {
     //cargar tarjetas de productos
     RecyclerView recyclerViewProducts;
     ArrayList<ProductVo> listProducts;
+    ProductAdapter adapter;
 
 
     @Override
@@ -70,15 +70,12 @@ public class details_category extends AppCompatActivity {
             public void onClick(View v) {
                 String idDeal_ = txtIdDealInCategoryDetail.getText().toString();
                 Intent intent = new Intent(getApplicationContext(), details_deal.class);
-               intent.putExtra("idDeal", idDeal_);
+                intent.putExtra("idDeal", idDeal_);
                 startActivity(intent);
                 finish();
             }
         });
 
-        //agregar icono de busqueda
-        mMaterialSearchViewProduct = (MaterialSearchView) findViewById(R.id.searchViewProduct);
-        mMaterialSearchViewProduct.setSuggestions(SUGGESTION);
 
         btnAddProduct = (FloatingActionButton) findViewById(R.id.btnAddProduct);
 
@@ -88,7 +85,7 @@ public class details_category extends AppCompatActivity {
             String idDeal = extras.getString("idDeal");
             String idCategory = extras.getString("idCategory");
 
-            if(idDeal.equals("0")){
+            if (idDeal.equals("0")) {
                 Connection db = new Connection(this, "bdDeals", null, 1);
                 SQLiteDatabase baseDatos = db.getWritableDatabase();
                 Cursor fila = baseDatos.rawQuery("SELECT *FROM category WHERE id = " + idCategory, null);
@@ -97,21 +94,21 @@ public class details_category extends AppCompatActivity {
                     consultDeal(idTemp);
                     baseDatos.close();
                 }
-            }else{
+            } else {
                 //llenar los datos de la tienda
                 consultDeal(idDeal);
             }
 
             //consultar los datos de la categoria
-           consultCategory(idCategory);
-           //
+            consultCategory(idCategory);
+            //
         }
 
         //recycler adapter
         listProducts = new ArrayList<>();
         recyclerViewProducts = (RecyclerView) findViewById(R.id.recyclerViewProducts);
         recyclerViewProducts.setLayoutManager(new LinearLayoutManager(this));
-        ProductAdapter adapter = new ProductAdapter(listProducts);
+        adapter = new ProductAdapter(listProducts);
         recyclerViewProducts.setAdapter(adapter);
         loadProducts(txtIdCategoryDetail.getText().toString());
 
@@ -120,13 +117,65 @@ public class details_category extends AppCompatActivity {
     //iconoes buscar y editar
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        //icono  para editar tiendas
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        //icono buscar
+        //icono  para editar categorias
         getMenuInflater().inflate(R.menu.edit_category, menu);
-        MenuItem menuItem = menu.findItem(R.id.searchMenu);
-        mMaterialSearchViewProduct.setMenuItem(menuItem);
-        return super.onCreateOptionsMenu(menu);
+
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.search_product, menu);
+        MenuItem menuItem = menu.findItem(R.id.searchProduct);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(menuItem);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                try {
+                    ArrayList<ProductVo> listaFiltrada = filter(listProducts, newText);
+                    adapter.setFilter(listaFiltrada);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return false;
+            }
+        });
+
+        MenuItemCompat.setOnActionExpandListener(menuItem, new MenuItemCompat.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem item) {
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem item) {
+                adapter.setFilter(listProducts);
+                return true;
+            }
+        });
+
+        return true; //
+    }
+
+    private ArrayList<ProductVo> filter(ArrayList<ProductVo> products, String text) {
+        ArrayList<ProductVo> listaFiltrada = new ArrayList<ProductVo>();
+        try {
+            text = text.toLowerCase();
+
+            for (ProductVo productVo : products) {
+                String deal = productVo.getName().toLowerCase();
+
+                if (deal.contains(text)) {
+                    listaFiltrada.add(productVo);
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return listaFiltrada;
     }
 
     @Override
@@ -140,9 +189,9 @@ public class details_category extends AppCompatActivity {
         if (id == R.id.editCategory) {
             String idDeal_ = txtIdDealInCategoryDetail.getText().toString();
             Intent intent = new Intent(getApplicationContext(), frm_edit_categories.class);
-            intent.putExtra("idDeal",idDeal_);
-            intent.putExtra("nameDeal",txtNameDealInCategoryDetail.getText().toString());
-            intent.putExtra("idCategory",txtIdCategoryDetail.getText().toString());
+            intent.putExtra("idDeal", idDeal_);
+            intent.putExtra("nameDeal", txtNameDealInCategoryDetail.getText().toString());
+            intent.putExtra("idCategory", txtIdCategoryDetail.getText().toString());
             intent.putExtra("nameCategory", txtNameCategoryDetail.getText().toString());
             startActivity(intent);
             Toast.makeText(this, "Editar Categoria", Toast.LENGTH_SHORT).show();
@@ -157,9 +206,9 @@ public class details_category extends AppCompatActivity {
         Connection db = new Connection(this, "bdDeals", null, 1);
         SQLiteDatabase baseDatos = db.getWritableDatabase();
         if (db != null) {
-                Cursor fila= baseDatos.rawQuery("SELECT * FROM product WHERE idCategory = '"+idC+"' ORDER BY id DESC",null);
+            Cursor fila = baseDatos.rawQuery("SELECT * FROM product WHERE idCategory = '" + idC + "' ORDER BY id DESC", null);
             int i = 0;
-            if (!(fila.getCount() <= 0)){
+            if (!(fila.getCount() <= 0)) {
                 if (fila.moveToFirst()) {
                     do {
                         String id = fila.getString(0);
@@ -174,7 +223,7 @@ public class details_category extends AppCompatActivity {
                         i++;
                     } while (fila.moveToNext());
                 }
-            }else {
+            } else {
                 Toast.makeText(getApplicationContext(), "No hay registros.", Toast.LENGTH_SHORT).show();
             }
         }
@@ -182,7 +231,7 @@ public class details_category extends AppCompatActivity {
 
 
     //consultar datos de una categoria
-    public void consultCategory (String id){
+    public void consultCategory(String id) {
         Connection db = new Connection(this, "bdDeals", null, 1);
         SQLiteDatabase baseDatos = db.getWritableDatabase();
 
@@ -191,7 +240,7 @@ public class details_category extends AppCompatActivity {
         if (fila.moveToFirst()) {
             txtIdCategoryDetail.setText(fila.getString(0));
             txtNameCategoryDetail.setText(fila.getString(1));
-            txtDescriptionCategoryDetail.setText("Descripción: "+fila.getString(2));
+            txtDescriptionCategoryDetail.setText("Descripción: " + fila.getString(2));
 
         } else {
             Toast.makeText(this, "No hay registro.", Toast.LENGTH_SHORT).show();
@@ -202,7 +251,7 @@ public class details_category extends AppCompatActivity {
     }
 
     //consultar datos de la tienda
-    public void consultDeal (String id){
+    public void consultDeal(String id) {
         Connection db = new Connection(this, "bdDeals", null, 1);
         SQLiteDatabase baseDatos = db.getWritableDatabase();
 
@@ -210,7 +259,7 @@ public class details_category extends AppCompatActivity {
 
         if (fila.moveToFirst()) {
             txtIdDealInCategoryDetail.setText(fila.getString(0));
-            txtNameDealInCategoryDetail.setText("Tienda: "+fila.getString(1));
+            txtNameDealInCategoryDetail.setText("Tienda: " + fila.getString(1));
 
         } else {
             Toast.makeText(this, "No hay registro.", Toast.LENGTH_SHORT).show();
@@ -220,38 +269,35 @@ public class details_category extends AppCompatActivity {
 
     }
 
-    public void init(){
+    public void init() {
         //datos de la tienda
         txtIdDealInCategoryDetail = (TextView) findViewById(R.id.txtIdDealInCategoryDetail);
         txtNameDealInCategoryDetail = (TextView) findViewById(R.id.txtNameDealInCategoryDetail);
 
         //datos de la categoria
-         txtIdCategoryDetail = (TextView) findViewById(R.id.txtIdCategoryDetail);
-         txtNameCategoryDetail = (TextView) findViewById(R.id.txtNameCategoryDetail);
-         txtDescriptionCategoryDetail = (TextView) findViewById(R.id.txtDescriptionCategoryDetail);
+        txtIdCategoryDetail = (TextView) findViewById(R.id.txtIdCategoryDetail);
+        txtNameCategoryDetail = (TextView) findViewById(R.id.txtNameCategoryDetail);
+        txtDescriptionCategoryDetail = (TextView) findViewById(R.id.txtDescriptionCategoryDetail);
 
-         //tarjetas de productos
-       // recyclerViewProducts =(RecyclerView) findViewById(R.id.recyclerViewProducts);
-
+        //tarjetas de productos
+        // recyclerViewProducts =(RecyclerView) findViewById(R.id.recyclerViewProducts);
 
 
     }
 
-    public void gotoFrmProduct(View v){
+    public void gotoFrmProduct(View v) {
         String idDeal_ = txtIdDealInCategoryDetail.getText().toString();
         // String nameDeal_ = nameDeal.getText().toString();
         Intent intent = new Intent(v.getContext(), frm_add_products.class);
         //enviamos el id y el nombre de la tienda para guardar una categoria
-        intent.putExtra("idDeal",idDeal_);
-        intent.putExtra("nameDeal",txtNameDealInCategoryDetail.getText().toString());
-        intent.putExtra("idCategory",txtIdCategoryDetail.getText().toString());
+        intent.putExtra("idDeal", idDeal_);
+        intent.putExtra("nameDeal", txtNameDealInCategoryDetail.getText().toString());
+        intent.putExtra("idCategory", txtIdCategoryDetail.getText().toString());
         intent.putExtra("nameCategory", txtNameCategoryDetail.getText().toString());
         //intent.putExtra("nameDealDetailDeal",nameDeal_);
         startActivity(intent);
-         Toast.makeText(this, "ID: "+idDeal_, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "ID: " + idDeal_, Toast.LENGTH_SHORT).show();
     }
-
-
 
 
 }

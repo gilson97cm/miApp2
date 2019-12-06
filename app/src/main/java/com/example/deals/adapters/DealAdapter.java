@@ -10,6 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,13 +26,17 @@ import com.example.deals.deals.details_deal;
 import com.example.deals.entities.DealVo;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
-public class DealAdapter extends RecyclerView.Adapter<DealAdapter.DealViewHolder> {
-    ArrayList<DealVo> mDataset;
+public class DealAdapter extends RecyclerView.Adapter<DealAdapter.DealViewHolder> { //implements Filterable
+    private List<DealVo> mDataset; //ArrayList<DealVo> mDataset;
+    private List<DealVo> mDatasetFull;
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public DealAdapter(ArrayList<DealVo> myDataset) {
+    public DealAdapter(List<DealVo> myDataset) { // public DealAdapter(ArrayList<DealVo> myDataset) {
         this.mDataset = myDataset;
+        this.mDatasetFull = new ArrayList<>(mDataset);
     }
 
     // Create new views (invoked by the layout manager)
@@ -56,6 +63,8 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.DealViewHolder
 
         //botones
         holder.setOnClickListeners();
+
+
     }
 
     // Return the size of your dataset (invoked by the layout manager)
@@ -63,6 +72,13 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.DealViewHolder
     public int getItemCount() {
         return mDataset.size();
     }
+
+    //filtrar tiendas
+ public void setFilter(ArrayList<DealVo> dealList_){
+        this.mDataset = new ArrayList<>();
+        this.mDataset.addAll(dealList_);
+        notifyDataSetChanged();
+ }
 
 
     public static class DealViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -134,4 +150,12 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.DealViewHolder
             }
         }
     }
+
+   /* public void updateList (List<DealVo> dealVoList){
+        mDataset = new ArrayList<DealVo>();
+        mDataset.addAll(dealVoList);
+        notifyDataSetChanged();
+
+    }*/
+
 }

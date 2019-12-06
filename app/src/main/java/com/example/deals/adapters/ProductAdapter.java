@@ -45,9 +45,9 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         //asignamos los datos al cardView
         holder.txtIdProductInCard.setText(mDataset.get(position).getId());
         holder.txtNameProduct.setText(mDataset.get(position).getName());
-        holder.txtDescriptionProduct.setText("Descripción:  "+mDataset.get(position).getDescription());
-        holder.txtPriceProduct.setText("Precio:  $"+mDataset.get(position).getPrice());
-        holder.txtStockProduct.setText("Stock:  "+mDataset.get(position).getStock());
+        holder.txtDescriptionProduct.setText("Descripción:  " + mDataset.get(position).getDescription());
+        holder.txtPriceProduct.setText("Precio:  $" + mDataset.get(position).getPrice());
+        holder.txtStockProduct.setText("Stock:  " + mDataset.get(position).getStock());
         holder.txtIdCategoryInCardProduct.setText(mDataset.get(position).getIdCategory());
 
         //imagen
@@ -66,6 +66,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         return mDataset.size();
     }
 
+    //filtrar tiendas
+    public void setFilter(ArrayList<ProductVo> productList_) {
+        this.mDataset = new ArrayList<>();
+        this.mDataset.addAll(productList_);
+        notifyDataSetChanged();
+    }
 
     public static class ProductViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         Context context;
@@ -101,6 +107,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             btnDestroyProduct = (Button) v.findViewById(R.id.btnDestroyProduct);
 
         }
+
         void setOnClickListeners() {
             btnEditProduct.setOnClickListener(this);
             btnDestroyProduct.setOnClickListener(this);
@@ -115,22 +122,22 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             switch (v.getId()) {
                 case R.id.btnEditProduct:
                     Toast.makeText(context, "Producto: " + name, Toast.LENGTH_SHORT).show();
-                  Intent intent = new Intent(context, frm_edit_products.class);
-                    intent.putExtra("idCategory",idCategory_);
-                    intent.putExtra("idProduct",id);
+                    Intent intent = new Intent(context, frm_edit_products.class);
+                    intent.putExtra("idCategory", idCategory_);
+                    intent.putExtra("idProduct", id);
                     context.startActivity(intent);
                     break;
                 case R.id.btnDestroyProduct:
                     Connection db = new Connection(v.getContext(), "bdDeals", null, 1);
                     SQLiteDatabase baseDatos = db.getWritableDatabase();
                     if (!id.equals("")) {
-                            baseDatos.delete("product", "id = " + id, null);
-                            baseDatos.close();
-                            Toast.makeText(v.getContext(), "Se elimino: " + name, Toast.LENGTH_SHORT).show();
-                            Intent intent1 = new Intent(context, details_category.class);
-                            intent1.putExtra("idDeal",idDeal_);
-                           intent1.putExtra("idCategory",idCategory_);
-                            context.startActivity(intent1);
+                        baseDatos.delete("product", "id = " + id, null);
+                        baseDatos.close();
+                        Toast.makeText(v.getContext(), "Se elimino: " + name, Toast.LENGTH_SHORT).show();
+                        Intent intent1 = new Intent(context, details_category.class);
+                        intent1.putExtra("idDeal", idDeal_);
+                        intent1.putExtra("idCategory", idCategory_);
+                        context.startActivity(intent1);
 
                     } else {
                         Toast.makeText(v.getContext(), "Nada para eliminar.", Toast.LENGTH_SHORT).show();

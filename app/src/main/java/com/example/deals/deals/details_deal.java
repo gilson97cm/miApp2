@@ -1,8 +1,10 @@
 package com.example.deals.deals;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import androidx.core.view.MenuItemCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -13,6 +15,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -32,11 +35,7 @@ import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import java.util.ArrayList;
 
 public class details_deal extends AppCompatActivity {
-    //sugerencias para la barra de busqueda
-    private String[] SUGGESTION = new String[]{
-            // "Apple", "Samsung"
-    };
-    private MaterialSearchView mMaterialSearchViewCategory;
+
 
     FloatingActionButton btnAddCategory;
     Toolbar toolbar;
@@ -61,6 +60,7 @@ public class details_deal extends AppCompatActivity {
     Button btnDestroyCategories;
 
     ArrayList<CategoryVo> listCategories;
+    CategoryAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,9 +80,7 @@ public class details_deal extends AppCompatActivity {
             }
         });
 
-        //agregar icono de busqueda
-        mMaterialSearchViewCategory = (MaterialSearchView) findViewById(R.id.searchViewCategory);
-        mMaterialSearchViewCategory.setSuggestions(SUGGESTION);
+
 
         btnAddCategory = (FloatingActionButton) findViewById(R.id.btnAddCategory);
 
@@ -99,7 +97,7 @@ public class details_deal extends AppCompatActivity {
         listCategories = new ArrayList<>();
         recyclerViewCategories = (RecyclerView) findViewById(R.id.recyclerViewCategory);
         recyclerViewCategories.setLayoutManager(new LinearLayoutManager(this));
-        CategoryAdapter adapter = new CategoryAdapter(listCategories);
+         adapter = new CategoryAdapter(listCategories);
         recyclerViewCategories.setAdapter(adapter);
         loadCategories(idDeal.getText().toString());
 
@@ -109,12 +107,65 @@ public class details_deal extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         //icono  para editar tiendas
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        //icono buscar
         getMenuInflater().inflate(R.menu.edit_deal, menu);
-        MenuItem menuItem = menu.findItem(R.id.searchMenu);
-        mMaterialSearchViewCategory.setMenuItem(menuItem);
-        return super.onCreateOptionsMenu(menu);
+
+
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.search_category, menu);
+        MenuItem menuItem = menu.findItem(R.id.searchCategory);
+        SearchView searchView =(SearchView) MenuItemCompat.getActionView(menuItem);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                try {
+                    ArrayList<CategoryVo> listaFiltrada = filter(listCategories,newText);
+                    adapter.setFilter(listaFiltrada);
+
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                return false;
+            }
+        });
+
+        MenuItemCompat.setOnActionExpandListener(menuItem, new MenuItemCompat.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem item) {
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem item) {
+                adapter.setFilter(listCategories);
+                return true;
+            }
+        });
+
+        return true; //
+    }
+
+    private ArrayList<CategoryVo> filter(ArrayList<CategoryVo> categories, String text){
+        ArrayList<CategoryVo> listaFiltrada =  new ArrayList<CategoryVo>();
+        try {
+            text = text.toLowerCase();
+
+            for(CategoryVo categoryVo: categories){
+                String deal = categoryVo.getName().toLowerCase();
+
+                if(deal.contains(text)){
+                    listaFiltrada.add(categoryVo);
+                }
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return listaFiltrada;
     }
 
 
