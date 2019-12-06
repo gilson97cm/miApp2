@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".frm_edit_categories">
+    tools:context=".categories.frm_edit_categories">
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_frmCategoryEdit"
         android:layout_width="match_parent"

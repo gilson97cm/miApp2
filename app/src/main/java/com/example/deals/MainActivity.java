@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.example.deals.adapters.DealAdapter;
 import com.example.deals.bd.Connection;
+import com.example.deals.deals.frm_add_deals;
 import com.example.deals.entities.DealVo;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;

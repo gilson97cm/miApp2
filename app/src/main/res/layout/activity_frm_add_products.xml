@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".frm_add_products">
+    tools:context=".products.frm_add_products">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_frmProduct"

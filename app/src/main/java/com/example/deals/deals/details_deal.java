@@ -1,4 +1,4 @@
-package com.example.deals;
+package com.example.deals.deals;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -20,9 +20,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.deals.MainActivity;
+import com.example.deals.R;
 import com.example.deals.adapters.CategoryAdapter;
 import com.example.deals.bd.Connection;
 import com.example.deals.entities.CategoryVo;
+import com.example.deals.categories.frm_add_categories;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 

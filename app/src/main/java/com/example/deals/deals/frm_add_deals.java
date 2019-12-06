@@ -1,4 +1,4 @@
-package com.example.deals;
+package com.example.deals.deals;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,6 +23,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.deals.MainActivity;
+import com.example.deals.R;
 import com.example.deals.bd.Connection;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;

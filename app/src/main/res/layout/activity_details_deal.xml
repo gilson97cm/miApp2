@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".details_deal">
+    tools:context=".deals.details_deal">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_DetailDeal"
@@ -137,7 +137,7 @@
         android:id="@+id/searchViewCategory"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Buscar"
+        android:hint="@string/searchCategory"
         android:textColor="@color/md_white_1000"
         android:textColorHint="@color/md_white_1000"
         app:searchBackIcon="@drawable/ic_action_navigation_arrow_back_inverted"

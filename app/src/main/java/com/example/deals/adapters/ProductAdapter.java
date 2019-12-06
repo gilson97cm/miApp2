@@ -2,7 +2,6 @@ package com.example.deals.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -18,9 +17,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.deals.R;
 import com.example.deals.bd.Connection;
-import com.example.deals.details_category;
+import com.example.deals.categories.details_category;
 import com.example.deals.entities.ProductVo;
-import com.example.deals.frm_edit_products;
+import com.example.deals.products.frm_edit_products;
 
 import java.util.ArrayList;
 

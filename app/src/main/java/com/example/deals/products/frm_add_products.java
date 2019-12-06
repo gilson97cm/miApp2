@@ -1,4 +1,4 @@
-package com.example.deals;
+package com.example.deals.products;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,7 +24,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.deals.MainActivity;
+import com.example.deals.R;
 import com.example.deals.bd.Connection;
+import com.example.deals.categories.details_category;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -32,7 +35,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
-public class frm_edit_products extends AppCompatActivity {
+public class frm_add_products extends AppCompatActivity {
 
     final int REQUEST_CODE_GALLERY = 999;
 
@@ -55,21 +58,21 @@ public class frm_edit_products extends AppCompatActivity {
     TextInputLayout txtInputStock;
     TextInputEditText txtEditStock;
 
-    TextView txtIdProduct;
-
     ImageView imgProduct;
     Button btnChoseImgDeal;
     Button btnImgDef;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_frm_edit_products);
+        setContentView(R.layout.activity_frm_add_products);
+
         init();
 
         //agrega la flecha para regresar en toolbar
-        toolbar = (Toolbar) findViewById(R.id.toolbar_frmProductEdit);
+        toolbar = (Toolbar) findViewById(R.id.toolbar_frmProduct);
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -80,39 +83,28 @@ public class frm_edit_products extends AppCompatActivity {
             }
         });
 
-        //recuperar variables que envia ProductAdapter
+        //recuperar variables que envia detail_deal
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
+            String idDeal = extras.getString("idDeal"); //el id de nebocio es para volver a details_category
+            String nameDeal = extras.getString("nameDeal");
             String idCategory = extras.getString("idCategory");
-            String idProduct = extras.getString("idProduct");
-            txtIdProduct.setText(idProduct);
+            String nameCategory = extras.getString("nameCategory");
 
-            Connection db = new Connection(this, "bdDeals", null, 1);
-            SQLiteDatabase baseDatos = db.getWritableDatabase();
-            Cursor fila = baseDatos.rawQuery("SELECT * FROM category WHERE id = " + idCategory, null);
-            if (fila.moveToFirst()) {
-                txtIdDealInFrmProduct.setText(fila.getString(3));
-                txtNameCategoryInFrmProduct.setText("Categoría: " + fila.getString(1));
-                txtIdCategoryInFrmProduct.setText(idCategory);
-
-                String idDealTemp = txtIdDealInFrmProduct.getText().toString();
-                Cursor filaD = baseDatos.rawQuery("SELECT * FROM deal WHERE id = " + idDealTemp, null);
-                if (filaD.moveToFirst()) {
-                    txtNameDealInFrmProduct.setText(filaD.getString(2));
-                    baseDatos.close();
-                }
-            }
-
-            consultProduct(idProduct);
+            txtIdDealInFrmProduct.setText(idDeal);
+            txtNameDealInFrmProduct.setText(nameDeal);
+            txtIdCategoryInFrmProduct.setText(idCategory);
+            txtNameCategoryInFrmProduct.setText("Categoría: "+nameCategory);
         }
+
 
     }
 
-    //lapiz para editar productos
+    //visto para registrar productos
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.edit_product_frm, menu);
+        getMenuInflater().inflate(R.menu.save_product, menu);
         return true;
     }
 
@@ -121,11 +113,11 @@ public class frm_edit_products extends AppCompatActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int idProductBtn = item.getItemId();
+        int idCategory = item.getItemId();
         //noinspection SimplifiableIfStatement
-        if (idProductBtn == R.id.editProductFrm) {
-            String idProduct = txtIdProduct.getText().toString();
-            updateProduct(idProduct);
+        if (idCategory == R.id.saveProduct) {
+            insertProduct();
+            //Toast.makeText(this, "Agregar Producto", Toast.LENGTH_SHORT).show();
             return true;
         }
 
@@ -144,7 +136,7 @@ public class frm_edit_products extends AppCompatActivity {
 
     //cambiar el logo
     public void choseImgProduct(View v) {
-        ActivityCompat.requestPermissions(frm_edit_products.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_CODE_GALLERY);
+        ActivityCompat.requestPermissions(frm_add_products.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_CODE_GALLERY);
     }
 
     //poner el logo por defecto
@@ -185,7 +177,7 @@ public class frm_edit_products extends AppCompatActivity {
     private void init() {
 
         //informacion de la tienda y categoria
-        txtNameDealInFrmProduct = (TextView) findViewById(R.id.txtNameDealInFrmProduct);
+        txtNameDealInFrmProduct =(TextView) findViewById(R.id.txtNameDealInFrmProduct);
         txtIdDealInFrmProduct = (TextView) findViewById(R.id.txtIdDealInFrmProduct);
         txtNameCategoryInFrmProduct = (TextView) findViewById(R.id.txtNameCategoryInFrmProduct);
         txtIdCategoryInFrmProduct = (TextView) findViewById(R.id.txtIdCategoryInFrmProduct);
@@ -203,34 +195,12 @@ public class frm_edit_products extends AppCompatActivity {
         btnChoseImgDeal = (Button) findViewById(R.id.btnChoseImgDeal);
         btnImgDef = (Button) findViewById(R.id.btnImgDef);
 
-        txtIdProduct = (TextView) findViewById(R.id.txtIdProduct);
-
 
     }
 
-    private void consultProduct (String idProduct_){
-        Connection db = new Connection(this, "bdDeals", null, 1);
-        SQLiteDatabase baseDatos = db.getWritableDatabase();
-        Cursor fila = baseDatos.rawQuery("SELECT * FROM product WHERE id = " + idProduct_, null);
 
-        if (fila.moveToFirst()){
-
-             txtEditNameProduct.setText(fila.getString(1));
-             txtEditDescriptionProduct.setText(fila.getString(2));
-             txtEditPrice.setText(fila.getString(3));
-             txtEditStock.setText(fila.getString(4));
-
-            byte[] blob = fila.getBlob(6);
-            Bitmap bmp= BitmapFactory.decodeByteArray(blob,0,blob.length);
-            ImageView image=new ImageView(this);
-            imgProduct.setImageBitmap(bmp);
-
-        }
-        baseDatos.close();
-    }
-
-    //actualizar productos
-    public void updateProduct(String idProduct_) {
+    //insertar productos
+    public void insertProduct() {
         Connection db = new Connection(this, "bdDeals", null, 1);
         SQLiteDatabase baseDatos = db.getWritableDatabase();
         String name = txtEditNameProduct.getText().toString();
@@ -246,6 +216,9 @@ public class frm_edit_products extends AppCompatActivity {
 
             ContentValues registro = new ContentValues();
 
+            Cursor fila = baseDatos.rawQuery("SELECT * FROM product WHERE name = '"+name+"' AND idCategory = '"+idCategory+"'" , null);
+
+            if (fila.getCount() <= 0) {
                 registro.put("name", name);
                 registro.put("description", description);
                 registro.put("price", price);
@@ -253,16 +226,18 @@ public class frm_edit_products extends AppCompatActivity {
                 registro.put("idCategory", idCategory);
                 registro.put("imgProduct", imgProductTemp);
 
-                baseDatos.update("product",registro, "id = "+idProduct_,null);
+                baseDatos.insert("product", null, registro);
                 baseDatos.close();
 
                 //clean();
-                Toast.makeText(this, "Producto actualizado con exito.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Producto agregado con exito.", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(this, details_category.class);
                 intent.putExtra("idDeal", idDeal);
                 intent.putExtra("idCategory", idCategory);
                 startActivity(intent);
-
+            } else {
+                Toast.makeText(this, "el Producto ya existe", Toast.LENGTH_SHORT).show();
+            }
         } else {
             txtInputNameProduct.setError(" ");
             txtInputDescriptionProduct.setError(" ");

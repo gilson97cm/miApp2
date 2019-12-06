@@ -8,4 +8,9 @@
     <string name="editCategory">Editar Categoría</string>
     <string name="addProduct">Registrar Producto</string>
     <string name="editProduct">Editar Producto</string>
+
+    <string name="searchDeal">Buscar Tienda...</string>
+    <string name="searchCategory">Buscar Categoría...</string>
+    <string name="searchProduct">Buscar Producto...</string>
+
 </resources>

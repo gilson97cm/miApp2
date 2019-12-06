@@ -1,4 +1,4 @@
-package com.example.deals;
+package com.example.deals.categories;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -15,7 +15,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.example.deals.R;
 import com.example.deals.bd.Connection;
+import com.example.deals.deals.details_deal;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 

@@ -1,8 +1,6 @@
 package com.example.deals.adapters;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -21,7 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.deals.MainActivity;
 import com.example.deals.R;
 import com.example.deals.bd.Connection;
-import com.example.deals.details_deal;
+import com.example.deals.deals.details_deal;
 import com.example.deals.entities.DealVo;
 
 import java.util.ArrayList;
