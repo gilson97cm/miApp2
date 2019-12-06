@@ -89,18 +89,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //accion buscar
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        MaterialSearchView searchViewM = (MaterialSearchView) findViewById(R.id.searchViewDeal);
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.search_deal, menu);
         MenuItem menuItem = menu.findItem(R.id.searchDeal);
-        SearchView searchView =(SearchView) MenuItemCompat.getActionView(menuItem);
+        searchViewM.setMenuItem(menuItem);
+       // SearchView searchView =(SearchView) MenuItemCompat.getActionView(menuItem);
         //custom searchbar
-        searchView.setQueryHint("Buscar Tienda...");
-        EditText searchEditText = searchView.findViewById(R.id.search_src_text);
-        searchEditText.setTextColor(Color.WHITE);
-        searchEditText.setHintTextColor(Color.WHITE);
+        //searchView.setQueryHint("Buscar Tienda...");
+
+        //EditText searchEditText = searchView.findViewById(R.id.search_src_text);
+        //searchEditText.setTextColor(Color.WHITE);
+        //searchEditText.setHintTextColor(Color.WHITE);
         /////
 
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        searchViewM.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 return false;

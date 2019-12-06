@@ -74,9 +74,15 @@
             android:layout_margin="20dp"
             app:srcCompat="@drawable/ic_add_black_24dp" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
     <com.miguelcatalan.materialsearchview.MaterialSearchView
+        android:id="@+id/searchViewDeal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        />
+        android:hint="@string/searchDeal"
+        android:textColor="@color/md_white_1000"
+        android:textColorHint="@color/md_grey_300"
+        app:searchBackIcon="@drawable/ic_action_navigation_arrow_back_inverted"
+        app:searchBackground="?colorPrimary"
+        app:searchCloseIcon="@drawable/ic_action_navigation_close_inverted"
+        app:searchSuggestionIcon="@drawable/ic_suggestion" />
 </RelativeLayout>

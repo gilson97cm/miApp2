@@ -120,11 +120,13 @@ public class details_category extends AppCompatActivity {
         //icono  para editar categorias
         getMenuInflater().inflate(R.menu.edit_category, menu);
 
+        MaterialSearchView searchViewM = (MaterialSearchView) findViewById(R.id.searchViewProduct);
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.search_product, menu);
         MenuItem menuItem = menu.findItem(R.id.searchProduct);
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(menuItem);
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        searchViewM.setMenuItem(menuItem);
+        //SearchView searchView = (SearchView) MenuItemCompat.getActionView(menuItem);
+        searchViewM.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 return false;

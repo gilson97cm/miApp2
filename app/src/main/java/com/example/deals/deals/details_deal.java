@@ -109,12 +109,13 @@ public class details_deal extends AppCompatActivity {
         //icono  para editar tiendas
         getMenuInflater().inflate(R.menu.edit_deal, menu);
 
-
+        MaterialSearchView searchViewM = (MaterialSearchView) findViewById(R.id.searchViewCategory);
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.search_category, menu);
         MenuItem menuItem = menu.findItem(R.id.searchCategory);
-        SearchView searchView =(SearchView) MenuItemCompat.getActionView(menuItem);
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        //SearchView searchView =(SearchView) MenuItemCompat.getActionView(menuItem);
+        searchViewM.setMenuItem(menuItem);
+        searchViewM.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 return false;
